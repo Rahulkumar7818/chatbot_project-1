@@ -1,0 +1,22 @@
+# Simplified in-memory placeholders (replace with DB/Redis in production)
+
+USER_DB = {}
+CHAT_HISTORY = {}
+
+def get_user_profile(user_id):
+    return USER_DB.get(user_id, {"name": "User", "preferences": []})
+
+def save_short_term(user_id, message, reply):
+    CHAT_HISTORY.setdefault(user_id, []).append((message, reply))
+    CHAT_HISTORY[user_id] = CHAT_HISTORY[user_id][-10:]
+
+def get_recent_messages(user_id):
+    return CHAT_HISTORY.get(user_id, [])
+
+def update_long_term(user_id, message):
+    if "I like" in message:
+        pref = message.split("I like")[-1].strip()
+        USER_DB.setdefault(user_id, {}).setdefault("preferences", []).append(pref)
+
+def search_vector_memory(user_id, query):
+    return USER_DB.get(user_id, {})

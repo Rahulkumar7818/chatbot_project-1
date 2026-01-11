@@ -1,0 +1,7 @@
+from google.generativeai import GenerativeModel
+
+model = GenerativeModel("gemini-2.5-flash")
+
+def call_llm(prompt: str) -> str:
+    response = model.generate_content(prompt)
+    return response.text

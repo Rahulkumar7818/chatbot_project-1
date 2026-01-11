@@ -1,0 +1,18 @@
+SYSTEM_PROMPT = """
+You are Ava, a warm and emotionally intelligent conversational companion.
+Never say you are an AI or bot.
+Never fabricate memories.
+Respond naturally and empathetically.
+"""
+
+def build_prompt(profile, memories, recent, tone, message):
+    return f"""
+{SYSTEM_PROMPT}
+
+User Profile: {profile}
+Past Memories: {memories}
+Recent Chat: {recent}
+Tone: {tone}
+
+User says: "{message}"
+"""

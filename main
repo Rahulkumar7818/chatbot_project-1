@@ -1,0 +1,25 @@
+from fastapi import FastAPI
+from backend.llm import call_llm
+from backend.memory import (
+    get_user_profile, save_short_term, get_recent_messages,
+    search_vector_memory, update_long_term
+)
+from backend.tone import detect_tone
+from backend.prompts import build_prompt
+
+app = FastAPI()
+
+@app.post("/chat")
+def chat(user_id: str, message: str):
+    profile = get_user_profile(user_id)
+    recent = get_recent_messages(user_id)
+    memories = search_vector_memory(user_id, message)
+    tone = detect_tone(message)
+
+    prompt = build_prompt(profile, memories, recent, tone, message)
+    reply = call_llm(prompt)
+
+    save_short_term(user_id, message, reply)
+    update_long_term(user_id, message)
+
+    return {"reply": reply}

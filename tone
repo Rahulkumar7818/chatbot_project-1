@@ -1,0 +1,7 @@
+def detect_tone(message: str) -> str:
+    msg = message.lower()
+    if any(w in msg for w in ["sad", "down", "tired"]):
+        return "empathetic"
+    if any(w in msg for w in ["joke", "roast", "funny"]):
+        return "playful"
+    return "neutral"
